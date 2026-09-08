@@ -1,0 +1,65 @@
+package models.Top;
+
+/*
+ *
+ *
+ * @author ZINZIN
+ */
+import services.MapService;
+import utils.Logger;
+
+import java.io.DataInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import models.Top.TOP;
+
+public final class RealTop {
+    public static List<TOP> topSM;
+    public static List<TOP> topSD;
+    public static List<TOP> topHP;
+    public static List<TOP> topKI;
+    public static List<TOP> topNV;
+    public static List<TOP> topSK;
+    public static List<TOP> topPVP;
+    public static List<TOP> topNHS;
+    public static List<TOP> topDC;
+    public static List<TOP> topVDST;
+    public static List<TOP> topWHIS;
+    public static List<TOP> topTrung;
+    public static List<TOP> topHopQua;
+    public static List<TOP> topBanhDay;
+    public static long timeRealTop = 0;
+    public static final String TOP_SM = "SELECT name, gender, items_body, CAST( JSON_EXTRACT(data_point, '$[1]') AS UNSIGNED) AS sm JOINON WHERE account.ban = 0 ORDER BY CAST( JSON_EXTRACT(data_point, '$[1]') AS UNSIGNED) DESC LIMIT 100;";
+    public static final String TOP_SD = "SELECT name, gender, items_body, CAST( split_str(data_point,',',8) AS UNSIGNED) AS sd FROM player INNER JOIN account ON account.id = player.account_id WHERE account.is_admin = 0 AND account.ban = 0 ORDER BY CAST( split_str(data_point,',',8)  AS UNSIGNED) DESC LIMIT 10;";
+    public static final String TOP_HP = "SELECT name, gender, items_body, CAST( split_str(data_point,',',6) AS UNSIGNED) AS hp FROM player INNER JOIN account ON account.id = player.account_id WHERE account.is_admin = 0 AND account.ban = 0 ORDER BY CAST( split_str(data_point,',',6)  AS UNSIGNED) DESC LIMIT 10;";
+    public static final String TOP_KI = "SELECT name, gender, items_body, CAST( split_str(data_point,',',7) AS UNSIGNED) AS ki FROM player INNER JOIN account ON account.id = player.account_id WHERE account.is_admin = 0 AND account.ban = 0 ORDER BY CAST( split_str(data_point,',',7)  AS UNSIGNED) DESC LIMIT 10;";
+    public static final String TOP_NV = "SELECT name, gender, items_body, CAST( JSON_EXTRACT(data_task, '$[0]') AS UNSIGNED) AS nv, CAST( JSON_EXTRACT(data_task, '$[1]') AS UNSIGNED) AS subnv, CAST( JSON_EXTRACT(data_task, '$[3]') AS UNSIGNED) AS lasttime FROM player INNER JOIN account ON account.id = player.account_id WHERE account.ban = 0 ORDER BY CAST( JSON_EXTRACT(data_task, '$[0]') AS UNSIGNED) DESC, CAST( JSON_EXTRACT(data_task, '$[1]') AS UNSIGNED) DESC, CAST( JSON_EXTRACT(data_task, '$[2]') AS UNSIGNED) DESC, CAST( JSON_EXTRACT(data_task, '$[3]') AS UNSIGNED) ASC LIMIT 100;";
+    public static final String TOP_SK = "SELECT name, gender, items_body, CAST( split_str( data_inventory,',',5)  AS UNSIGNED) AS event FROM player INNER JOIN account ON account.id = player.account_id WHERE account.is_admin = 0 AND account.ban = 0 ORDER BY CAST( split_str( data_inventory,',',5)  AS UNSIGNED) DESC LIMIT 10;";
+    public static final String TOP_PVP = "SELECT name, gender, items_body, CAST( pointPvp AS UNSIGNED) AS pointPvp FROM player INNER JOIN account ON account.id = player.account_id WHERE account.ban = 0 ORDER BY CAST( pointPvp AS UNSIGNED) DESC LIMIT 100;";
+    public static final String TOP_NHS = "SELECT name, gender, items_body, NguHanhSonPoint FROM player INNER JOIN account ON account.id = player.account_id WHERE account.ban = 0 ORDER BY NguHanhSonPoint DESC LIMIT 100;";
+    public static final String TOP_DC = "SELECT name, gender, items_body, dicanh, juventus FROM player INNER JOIN account ON account.id = player.account_id WHERE account.ban = 0 ORDER BY dicanh DESC LIMIT 100;";
+    public static final String TOP_VDST = "SELECT name, gender, items_body, CAST( JSON_EXTRACT(vodaisinhtu, '$[2]') AS UNSIGNED) AS lasttime, CAST( JSON_EXTRACT(vodaisinhtu, '$[3]') AS UNSIGNED) AS time FROM player INNER JOIN account ON account.id = player.account_id WHERE account.ban = 0 AND CAST( JSON_EXTRACT(vodaisinhtu, '$[3]') AS UNSIGNED) > 0 ORDER BY CAST( JSON_EXTRACT(vodaisinhtu, '$[3]') AS UNSIGNED) ASC LIMIT 100;";
+    public static final String TOP_WHIS = "SELECT name, player.id, gender, items_body, CAST( JSON_EXTRACT(data_luyentap, '$[5]') AS UNSIGNED) AS top, CAST( JSON_EXTRACT(data_luyentap, '$[6]') AS UNSIGNED) AS time, CAST( JSON_EXTRACT(data_luyentap, '$[7]') AS UNSIGNED) AS lasttime FROM player INNER JOIN account ON account.id = player.account_id WHERE account.ban = 0 AND CAST( JSON_EXTRACT(data_luyentap, '$[5]') AS UNSIGNED) > 0 ORDER BY CAST( JSON_EXTRACT(data_luyentap, '$[5]') AS UNSIGNED) DESC, CAST( JSON_EXTRACT(data_luyentap, '$[6]') AS UNSIGNED) ASC LIMIT 100;";
+    public static final String TOP_3_WHIS = "SELECT name, id, gender, items_body, CAST( JSON_EXTRACT(data_luyentap, '$[5]') AS UNSIGNED) AS top, CAST( JSON_EXTRACT(data_luyentap, '$[6]') AS UNSIGNED) AS time, CAST( JSON_EXTRACT(data_luyentap, '$[7]') AS UNSIGNED) AS lasttime FROM player INNER JOIN account ON account.id = player.account_id WHERE account.ban = 0 AND CAST( JSON_EXTRACT(data_luyentap, '$[5]') AS UNSIGNED) > 0 ORDER BY CAST( JSON_EXTRACT(data_luyentap, '$[5]') AS UNSIGNED) DESC, CAST( JSON_EXTRACT(data_luyentap, '$[6]') AS UNSIGNED) ASC LIMIT 3;";
+
+    public static List<TOP> realTop(String query, Connection con) {
+        List<TOP> tops = new ArrayList<>();
+        try {
+            PreparedStatement ps = con.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                TOP top = TOP.builder().id_player(rs.getInt("id")).build();
+                switch (query) {
+                }
+                tops.add(top);
+            }
+        } catch (Exception e) {
+
+        }
+        return tops;
+    }
+}

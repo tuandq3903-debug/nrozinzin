@@ -1,0 +1,91 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package models.npc.manifest;
+
+import consts.ConstNpc;
+import models.item.Item;
+import java.util.Random;
+import models.npc.Npc;
+import models.player.Player;
+import services.InventoryService;
+import services.ItemService;
+import services.Service;
+
+/**
+ *
+ * @author Administrator
+ */
+public class NgoKhong extends Npc {
+
+    public NgoKhong(int mapId, int status, int cx, int cy, int tempId, int avartar) {
+        super(mapId, status, cx, cy, tempId, avartar);
+    }
+
+    @Override
+    public void openBaseMenu(Player player) {
+        if (canOpenNpc(player)) {
+            switch (mapId) {
+                case 122 -> {
+                    createOtherMenu(player, ConstNpc.BASE_MENU, "|0|Chu mi nga\n",
+                            "Tặng quả\nhồng đào", "Tặng quả\nhồng đào\nchín");
+                }
+                default ->
+                    super.openBaseMenu(player);
+            }
+        }
+    }
+
+    @Override
+    public void confirmMenu(Player player, int select) {
+        if (canOpenNpc(player)) {
+            if (player.iDMark.isBaseMenu()) {
+                switch (select) {
+                    case 0: {
+                        Item daohong = InventoryService.gI().findItemBag(player, 541);
+
+                        if (daohong != null && daohong.quantity >= 1) {
+                            InventoryService.gI().subQuantityItemsBag(player, daohong, 1);
+                            Item[] chuItems = new Item[]{
+                                ItemService.gI().createNewItem((short) 537),
+                                ItemService.gI().createNewItem((short) 538),
+                                ItemService.gI().createNewItem((short) 540),
+                                ItemService.gI().createNewItem((short) 539)
+                            };
+                            Random rand = new Random();
+                            Item selectedItem = chuItems[rand.nextInt(chuItems.length)];
+                            InventoryService.gI().addItemBag(player, selectedItem);
+                            InventoryService.gI().sendItemBag(player);
+                            Service.gI().sendThongBao(player, "Bạn nhận được: " + selectedItem.template.name);
+                        } else {
+                            Service.gI().sendThongBao(player, "cần 1 quả hồng đào!");
+                        }
+                        break;
+                    }
+                    case 1: {
+                        Item daohong = InventoryService.gI().findItemBag(player, 542);
+                        if (daohong != null && daohong.quantity >= 1) {
+                            InventoryService.gI().subQuantityItemsBag(player, daohong, 1);
+                            Item[] chuItems = new Item[]{
+                                ItemService.gI().createNewItem((short) 537),
+                                ItemService.gI().createNewItem((short) 538),
+                                ItemService.gI().createNewItem((short) 540),
+                                ItemService.gI().createNewItem((short) 539)
+                            };
+                            Random rand = new Random();
+                            Item selectedItem = chuItems[rand.nextInt(chuItems.length)];
+                            InventoryService.gI().addItemBag(player, selectedItem);
+                            InventoryService.gI().sendItemBag(player);
+                            Service.gI().sendThongBao(player, "Bạn nhận được: " + selectedItem.template.name);
+                        } else {
+                            Service.gI().sendThongBao(player, "cần 1 quả hồng đào!");
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+}
