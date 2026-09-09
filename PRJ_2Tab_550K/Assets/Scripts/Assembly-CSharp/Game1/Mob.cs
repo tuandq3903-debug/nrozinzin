@@ -277,6 +277,33 @@ namespace Game1
 				checkData();
 				getData();
 			}
+			else
+			{
+				// Hirudegarn (templateId==70) dùng sprite BigBoss s==0 (effectdata/101)
+				if (arrMobTemplate[templateId].data == null)
+				{
+					arrMobTemplate[templateId].data = new EffectData();
+					string text = "/x" + mGraphics.zoomLevel + "/effectdata/" + 101 + "/data";
+					try
+					{
+						arrMobTemplate[templateId].data.readData2(text);
+						arrMobTemplate[templateId].data.img = GameCanvas.loadImage("/effectdata/" + 101 + "/img.png");
+						if (lastMob.size() > 15)
+						{
+							arrMobTemplate[int.Parse((string)lastMob.elementAt(0))].data = null;
+							lastMob.removeElementAt(0);
+						}
+						lastMob.addElement(templateId + string.Empty);
+					}
+					catch (Exception)
+					{
+						arrMobTemplate[templateId].data = null;
+						Service.gI().requestModTemplate(templateId);
+					}
+				}
+				w = arrMobTemplate[templateId].data.width;
+				h = arrMobTemplate[templateId].data.height;
+			}
 			if (!isExistNewMob(templateId + string.Empty))
 			{
 				newMob.addElement(templateId + string.Empty);

@@ -11,6 +11,7 @@ import java.util.Date;
 
 import jdbc.DatabaseManager;
 import jdbc.daos.PlayerDAO;
+import models.Template;
 import models.player.Player;
 import network.Message;
 import models.player.dailyGift.DailyGiftService;
@@ -216,11 +217,16 @@ public class PlayerService {
             // reset trước khi cấp
             pl.HocSkill.Time = -1;
             pl.HocSkill.ItemTemplateSkillId = -1;
+            // Bảo vệ: nếu template không tồn tại trong DB thì bỏ qua (không cấp skill, vẫn lưu DB)
+            Template.ItemTemplate tpl = ItemService.gI().getTemplate(tplId);
+            if (tpl == null) {
+                Logger.warning(PlayerService.class, "checkCompleteHocSkill: ItemTemplate id=" + tplId + " không tồn tại cho player id=" + pl.id + ", bỏ qua cấp skill");
+                PlayerDAO.updatePlayer(pl);
+                return;
+            }
             // parse level từ tên item
             byte level = Byte.parseByte(
-                ItemService.gI()
-                    .getTemplate(tplId)
-                    .name.replaceAll("\\D+", "")
+                tpl.name.replaceAll("\\D+", "")
             );
             try {
                 // tạo và gán skill mới

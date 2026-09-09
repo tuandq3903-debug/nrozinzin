@@ -292,14 +292,14 @@ namespace Game1
 			tahoma_7b_yellow = new mFont(4);
 			tahoma_7b_yellowSmall = new mFont(4);
 			tahoma_7b_dark = new mFont(5);
-			tahoma_7b_green2 = new mFont(2);
-			tahoma_7b_green = new mFont(17);
+			tahoma_7b_green2 = new mFont(6);
+			tahoma_7b_green = new mFont(7);
 			tahoma_7b_focus = new mFont(8);
 			tahoma_7b_unfocus = new mFont(9);
 			tahoma_7 = new mFont(10);
 			tahoma_7_blue1 = new mFont(11);
 			tahoma_7_blue1Small = tahoma_7_blue1;
-			tahoma_7_green2 = new mFont(2);
+			tahoma_7_green2 = new mFont(12);
 			tahoma_7_yellow = new mFont(13);
 			tahoma_7_orange = new mFont(24);
 			tahoma_7_grey = new mFont(14);
