@@ -1,4 +1,14 @@
+# Unity generated files
+/PRJ_2Tab_550K/Library/
+/PRJ_2Tab_550K/Logs/
+/PRJ_2Tab_550K/Temp/
+/PRJ_2Tab_550K/UserSettings/
+
+# Local build output and logs
+/NRO ZINZIN2025 V3/NRO ZINZIN/temp_out.txt
 /NRO ZINZIN2025 V3/NRO ZINZIN/.idea/
+/NRO ZINZIN2025 V3/NRO ZINZIN/temp_out.txt
+temp_out.txt
 /NRO ZINZIN2025 V3/NRO ZINZIN/dist/
 /NRO ZINZIN2025 V3/NRO ZINZIN/out/
 /NRO ZINZIN2025 V3/NRO ZINZIN/logs/
